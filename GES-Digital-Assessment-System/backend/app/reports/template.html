@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: sans-serif; color: #1f2937; margin: 30px; }
+    h1, h2 { color: #12385a; text-align: center; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #9ca3af; padding: 8px; text-align: left; }
+    th { background: #e5eef5; }
+    .remarks { margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <h1>GES Report Card</h1>
+  <h2>{{ student.full_name }}</h2>
+  <p>Class: {{ enrollment.class_level }} | Academic year: {{ enrollment.academic_year }} | Term: {{ enrollment.term }}</p>
+  <table>
+    <thead><tr><th>Subject</th><th>Score</th><th>Grade</th><th>Remarks</th></tr></thead>
+    <tbody>
+      {% for grade in grades %}
+      <tr><td>{{ grade.subject_name }}</td><td>{{ grade.score }}</td><td>{{ grade.letter }}</td><td>{{ grade.remark }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="remarks"><strong>Teacher remarks:</strong> {{ behavioral.remarks or '—' }}</p>
+</body>
+</html>

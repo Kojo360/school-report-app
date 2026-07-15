@@ -1,0 +1,18 @@
+.app-shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+aside { background: #12385a; color: #fff; display: flex; flex-direction: column; padding: 28px 18px; }
+aside h1 { font-size: 1.25rem; margin: 0 0 32px; }
+nav { display: grid; gap: 6px; }
+nav a, .logout { border-radius: 6px; color: #dceaf5; padding: 10px 12px; text-decoration: none; }
+nav a.active, nav a:hover { background: #205a87; color: #fff; }
+.logout { margin-top: auto; }
+main { background: #f5f8fb; padding: 40px; }
+section { max-width: 1000px; }
+h2 { color: #143653; margin-top: 0; }
+.cards { display: grid; gap: 18px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.card, .empty { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px #12385a1a; padding: 22px; }
+.card span { color: #587084; display: block; }.card strong { color: #143653; font-size: 2rem; }
+.empty { color: #587084; }.login { align-items: center; background: #f5f8fb; display: flex; justify-content: center; min-height: 100vh; }
+.login form { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px #12385a1a; display: grid; gap: 16px; padding: 32px; width: 320px; }
+.login h1 { color: #143653; margin: 0; }.login p { color: #587084; margin: 0; }.login label { color: #143653; display: grid; gap: 6px; }
+input { border: 1px solid #b7c9d9; border-radius: 6px; font: inherit; padding: 9px; }.button { background: #1769a7; border-radius: 6px; color: #fff; padding: 10px; text-align: center; text-decoration: none; }
+@media (max-width: 700px) { .app-shell { grid-template-columns: 1fr; } aside { gap: 16px; padding: 16px; } aside h1 { margin: 0; } nav { grid-template-columns: repeat(2, 1fr); }.logout { margin-top: 0; } main { padding: 24px; }.cards { grid-template-columns: 1fr; } }
