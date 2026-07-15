@@ -24,4 +24,4 @@ def login(credentials: LoginRequest, db: Session = Depends(get_db)) -> TokenResp
         )
     log_audit(db, user.username, "LOGIN")
     db.commit()
-    return TokenResponse(access_token=create_access_token(user.username, user.role))
+    return TokenResponse(access_token=create_access_token(user.username, user.role.name.lower()))

@@ -3,7 +3,6 @@
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from weasyprint import HTML
 
 from app.services.grading import calculate_grade, calculate_score
 
@@ -11,6 +10,14 @@ from app.services.grading import calculate_grade, calculate_score
 _templates = Environment(
     loader=FileSystemLoader(Path(__file__).parent), autoescape=select_autoescape(["html"])
 )
+
+
+def _render_pdf(html: str) -> bytes:
+    try:
+        from weasyprint import HTML
+    except (ImportError, OSError) as error:
+        raise RuntimeError("Report PDF generation requires WeasyPrint system libraries.") from error
+    return HTML(string=html).write_pdf()
 
 
 def generate_report_pdf(enrollment) -> bytes:
@@ -27,4 +34,4 @@ def generate_report_pdf(enrollment) -> bytes:
         grades=grade_rows,
         behavioral=enrollment.behavioral_record,
     )
-    return HTML(string=html).write_pdf()
+    return _render_pdf(html)

@@ -1,12 +1,2 @@
-fastapi
-uvicorn
-sqlalchemy
-psycopg2-binary
-alembic
-python-jose
-passlib
-bcrypt
-python-multipart
-pydantic
-weasyprint
-jinja2
+# Convenience umbrella for backend installation from the repository root.
+-r GES-Digital-Assessment-System/backend/requirements.txt

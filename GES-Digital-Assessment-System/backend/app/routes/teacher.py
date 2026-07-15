@@ -16,7 +16,7 @@ from app.security.jwt import require_teacher
 from app.services.audit import log_audit
 
 
-router = APIRouter(dependencies=[Depends(require_teacher)])
+router = APIRouter(prefix="/legacy", dependencies=[Depends(require_teacher)])
 
 
 @router.get("/students", response_model=list[StudentResponse])

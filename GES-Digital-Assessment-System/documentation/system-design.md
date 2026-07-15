@@ -160,3 +160,39 @@ Only a draft enrollment is editable by a teacher. Approval and publication are i
 6. Verify counts and reports, then retire legacy models and routes in a scheduled breaking release.
 
 This migration avoids losing previously entered student and grade data.
+
+## Sprint 3: academic and enrollment workflow
+
+```text
+Administrator → academic year → terms → classes → subjects → teachers
+→ class-teacher assignments → students → enrollments
+→ teacher grade entry → headmaster approval → report generation
+```
+
+Enrollment is the historical record of a student’s class placement for one academic year and term. `students` must not have a mutable `class_id`: promotions and transfers create new enrollment records instead of overwriting history.
+
+### API and authorization contract
+
+| API | Roles | Rules |
+| --- | --- | --- |
+| `GET/POST/PUT /academic-years` | Administrator | one current academic year |
+| `GET/POST/PUT /terms` | Administrator | term belongs to academic year |
+| `GET/POST /subjects` | Administrator | code and name unique |
+| `GET/POST /classes` | Administrator | supports streams such as `Basic 5A` |
+| `PUT /classes/{id}/assign-teacher` | Administrator | teacher must exist |
+| `GET/POST/PUT /students` | Administrator, Headmaster | teachers cannot register students |
+| `GET /students` | Authenticated | pagination plus name, number, class, gender filters |
+| `POST /enrollments` | Administrator, Headmaster | unique student/year/term placement |
+| `POST /enrollments/{id}/transfer` | Administrator, Headmaster | closes/transfers prior enrollment and creates a new record |
+| `GET /classes/{id}/students` | Assigned Teacher, Headmaster, Administrator | class list |
+| `GET /dashboard/statistics` | Headmaster, Administrator | aggregate counts/current term |
+
+Student creation generates `GES-{admission_year}-{sequence:04d}`. Date of birth cannot be in the future, admission date cannot precede birth, and student number is unique. Enrollment validates all referenced records and verifies that its term belongs to its academic year; duplicate student/year/term enrollment returns HTTP 409.
+
+### Required implementation boundary
+
+```text
+API router → service → repository → SQLAlchemy session
+```
+
+Routers validate HTTP input and enforce RBAC. Services enforce school workflows and transaction boundaries. Repositories contain query and persistence logic. This boundary applies to `student_service`, `class_service`, and `enrollment_service` plus their corresponding repositories.
